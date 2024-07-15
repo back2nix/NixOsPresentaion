@@ -1,10 +1,9 @@
 result
 debug
 stage1
-sshuttle
 .devbox
 virtenv
-python
 .venv
 node_modules
+.jupyter
 modules

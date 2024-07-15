@@ -96,97 +96,132 @@ nix build
 
 ### 3. Incremental Build
 
-- [./incremental_build](./incremental_build/README.md)
+- [пример ./incremental_build](./incremental_build/README.md)
 
-### 4. Тестирование с виртуальной машиной
+# Продвинутые темы NixOS
 
-- https://github.com/NixOS/nixpkgs/blob/master/nixos/tests/bittorrent.nix
-- https://github.com/NixOS/nixpkgs/blob/master/nixos/tests/k3s/multi-node.nix
+## 1. Тестирование с виртуальной машиной
 
-### 5. NixOs на спутнике
+- [Пример: тест BitTorrent](https://github.com/NixOS/nixpkgs/blob/master/nixos/tests/bittorrent.nix)
+- [Пример: мульти-нодовый тест K3s](https://github.com/NixOS/nixpkgs/blob/master/nixos/tests/k3s/multi-node.nix)
 
-- https://www.youtube.com/watch?v=RL2xuhU9Nhk
+## 2. NixOS на спутнике
 
-### 6. Поменять ядро
+- [Видео: NixOS в космосе](https://www.youtube.com/watch?v=RL2xuhU9Nhk)
 
-```
+## 3. Изменение ядра системы
+
+```nix
 boot.kernelPackages = pkgs.linuxPackages_latest;
-#boot.kernelPackages = pkgs.linuxKernel.packages.linux_5_15;
-#boot.kernelPackages = pkgs.pkgs.linuxPackages_4_18;
+# boot.kernelPackages = pkgs.linuxKernel.packages.linux_5_15;
+# boot.kernelPackages = pkgs.pkgs.linuxPackages_4_18;
 ```
 
-### 7. devbox shell
+## 4. Инструменты разработки
 
 - devenv
-- https://www.youtube.com/watch?v=ZhwYh15a8Ls
+- [Видео: devbox shell](https://www.youtube.com/watch?v=ZhwYh15a8Ls)
 
-### 7. NixOS vs Ansible
+# Комплексное руководство по NixOS
 
+## 1. NixOS vs Ansible
+- **Ansible**: императивный подход (последовательность шагов)
+- **NixOS**: декларативный подход ("манифест" желаемого состояния)
+
+## 2. Кросс-компиляция
+- [Урок по Кросс-компиляции](https://nix.dev/tutorials/cross-compilation)
+- [Видео: Cross-Compile в NixOS](https://www.youtube.com/watch?v=OV2hi8b5t48)
+
+```bash
+nix repl '<nixpkgs>' -I nixpkgs=channel:nixos-23.11
+nix-repl> pkgsCross.<TAB>
+pkgsCross.aarch64-android             pkgsCross.musl-power
+pkgsCross.aarch64-android-prebuilt    pkgsCross.musl32
+pkgsCross.aarch64-darwin              pkgsCross.musl64
+pkgsCross.aarch64-embedded            pkgsCross.muslpi
+pkgsCross.aarch64-multiplatform       pkgsCross.or1k
+pkgsCross.aarch64-multiplatform-musl  pkgsCross.pogoplug4
+pkgsCross.aarch64be-embedded          pkgsCross.powernv
+pkgsCross.amd64-netbsd                pkgsCross.ppc-embedded
+pkgsCross.arm-embedded                pkgsCross.ppc64
+pkgsCross.armhf-embedded              pkgsCross.ppc64-musl
+pkgsCross.armv7a-android-prebuilt     pkgsCross.ppcle-embedded
+pkgsCross.armv7l-hf-multiplatform     pkgsCross.raspberryPi
+pkgsCross.avr                         pkgsCross.remarkable1
+pkgsCross.ben-nanonote                pkgsCross.remarkable2
+pkgsCross.fuloongminipc               pkgsCross.riscv32
+pkgsCross.ghcjs                       pkgsCross.riscv32-embedded
+pkgsCross.gnu32                       pkgsCross.riscv64
+pkgsCross.gnu64                       pkgsCross.riscv64-embedded
+pkgsCross.i686-embedded               pkgsCross.scaleway-c1
+pkgsCross.iphone32                    pkgsCross.sheevaplug
+pkgsCross.iphone32-simulator          pkgsCross.vc4
+pkgsCross.iphone64                    pkgsCross.wasi32
+pkgsCross.iphone64-simulator          pkgsCross.x86_64-embedded
+pkgsCross.mingw32                     pkgsCross.x86_64-netbsd
+pkgsCross.mingwW64                    pkgsCross.x86_64-netbsd-llvm
+pkgsCross.mmix                        pkgsCross.x86_64-unknown-redox
+pkgsCross.msp430
 ```
-Главное философское различие между NixOS и Ansible заключается в подходах к программированию: императивном и декларативном. Ansible playbooks представляют собой последовательность шагов, выполняемых для достижения желаемого конечного состояния.
-Конфигурации NixOS, напротив, являются "манифестом" желаемого конечного состояния.
+
+```bash
+nix-build '<nixpkgs>' -I nixpkgs=channel:nixos-23.11 \
+  --arg crossSystem '{ config = "aarch64-unknown-linux-gnu"; }' \
+  -A hello
 ```
 
-### 7. Cross-Compile
+## 3. nix-init и Poetry
+Примеры использования:
+- [golang https://github.com/viktomas/godu](nix_init/golang/README.md)
 
-- https://www.youtube.com/watch?v=OV2hi8b5t48
+- Для Python nix-init не сработал так хорошо, поэтому без него
+- [jupyenv](nix_init/python/jupyenv/README.md)
+ - Для python `kernel.python.minimal.enable = true`
+ - Для Go     `kernel.go.minimal-example.enable  = true`
+ - Для C      `kernel.c.minimal-example.enable  = true`
+ - И для других ...
+- [python-poetry](nix_init/python/python-poetry-tutorial/README.md)
+- [proxy sshuttle](nix_init/python/sshuttle/README.md)
 
-### 8 nix-init poetry
+## 4. NixOS vs Docker
+- Docker не перестраивает слой, если не знает об изменениях
+- [Пример динамической генерации Docker образов с Nix](https://youtu.be/pfIDYQ36X0k?list=PLzK3KxVQUZEXEq820lpONsP9QFXYK8jkx&t=990)
+- [Nixery: динамическая генерация Docker образов](https://nixery.dev/)
+- [NixOS Dockertools](https://ryantm.github.io/nixpkgs/builders/images/dockertools/)
 
-- golang
-- python/python-poetry-tutorial
-- python/sshuttle
+## 5. Чистота системы
+- Выход из shell удаляет пакеты
 
-### 9. NixOS vs Docker
+## 6. Управление конфигурациями
+- Nix позволяет декларативно описывать различные варианты запуска сервисов
+- Унификация конфигураций различных сервисов через Nix
 
-- Docker не будет перестраивать слой. Потому что он не знает изменилось ли там что-то
-- https://youtu.be/pfIDYQ36X0k?list=PLzK3KxVQUZEXEq820lpONsP9QFXYK8jkx&t=990
-- динамически генерит образ докер с помощью nix
-- https://nixery.dev/
-- https://ryantm.github.io/nixpkgs/builders/images/dockertools/
+## 7. Масштабируемость настроек
+- Настройка одного экземпляра позволяет легко масштабировать на остальные
 
-### 10. Не загрязняем систему
+## 8. Кто использует Nix
+- [Anduril Industries](https://github.com/anduril/jetpack-nixos)
+- [Shopify](https://shopify.engineering/what-is-nix)
+- [Copier](https://github.com/copier-org/copier)
+- и многие другие...
 
-- Вышел из shell и нет пакета
+## 9. Docker и Nix
+- [Видео: Docker и Nix](https://www.youtube.com/watch?v=l17oRkhgqHE)
+- [Docker Babashka Pod](https://github.com/docker/babashka-pod-docker)
+- [Почему Alpine используется в Docker](https://youtu.be/pfIDYQ36X0k?list=PLzK3KxVQUZEXEq820lpONsP9QFXYK8jkx&t=2206)
 
-### 10. Различные варианты запуска зоопарка сервисов записаны в README.md?
+## 10. Преимущества NixOS
+- [Сравнение с Arch Linux](https://youtu.be/0uixRE8xlbY?t=1017)
 
-- Nix позволяет задекларировать эти варианты и переключатся на них с помощью флагов
-- Не нужно больше читать документацию по разным сервисам. Все конфиги будут однотипными через nix
+## 11. Полезные ссылки
+- [Поиск пакетов NixOS](https://search.nixos.org/packages)
+- [NixHub: поиск Go пакетов](https://www.nixhub.io/packages/go)
+- [Опции Home Manager](https://home-manager-options.extranix.com/)
 
-### 11. Настроил один остальные просто используют
-
-### 12. Кто использует nix
-
-- https://github.com/anduril/jetpack-nixos
-- https://shopify.engineering/what-is-nix
-- https://github.com/copier-org/copier
-- and more...
-
-
-### 13. Youtube
-
-- docker and nix
-- https://www.youtube.com/watch?v=l17oRkhgqHE
-- https://github.com/docker/babashka-pod-docker
-- Почему alpline используют в докере ?
-- https://youtu.be/pfIDYQ36X0k?list=PLzK3KxVQUZEXEq820lpONsP9QFXYK8jkx&t=2206
-
-### 15. Лучше чем у Arch больше чем у Arch и более воспроизводимее чем у дригих дистро
-
-- https://youtu.be/0uixRE8xlbY?t=1017
-
-### 15. Ссылки
-
-- https://search.nixos.org/packages
-- https://www.nixhub.io/packages/go
-- https://home-manager-options.extranix.com/
-
-### Как изучать nix?
-
-- https://nix.dev/tutorials/index.html
-- https://nixos-and-flakes.thiscute.world/introduction/
-- https://community.flake.parts/services-flake
-- github поиск: "language:nix myoption"
-- https://github.com/NixOS/nixpkgs
-- https://nixos.org/manual/nixpkgs/stable/
+## 12. Как изучать Nix
+- [Официальные туториалы](https://nix.dev/tutorials/index.html)
+- [NixOS и Flakes](https://nixos-and-flakes.thiscute.world/introduction/)
+- [Flake Parts Community](https://community.flake.parts/services-flake)
+- GitHub поиск: "language:nix myoption"
+- [Репозиторий NixOS/nixpkgs](https://github.com/NixOS/nixpkgs)
+- [Руководство Nixpkgs](https://nixos.org/manual/nixpkgs/stable/)
