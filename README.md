@@ -1,4 +1,4 @@
-# Презентация Nix 
+# Презентация Nix
 
 ---
 
@@ -38,9 +38,7 @@
 - Повышенная защита от уязвимостей
 - [Подробнее о безопасности](https://youtu.be/pfIDYQ36X0k?list=PLzK3KxVQUZEXEq820lpONsP9QFXYK8jkx&t=281)
 
----
-
-## Изоляция сборки
+#### Изоляция сборки
 
 - В отличие от NPM или Ruby, NixOS предотвращает отправку кода на сторонние серверы во время сборки
 - Фаза сборки отделена от скачивания
@@ -206,7 +204,7 @@ nix-build '<nixpkgs>' -I nixpkgs=channel:nixos-23.11 \
 - [NixOS Dockertools](https://ryantm.github.io/nixpkgs/builders/images/dockertools/)
 - можно написать nix flake который будет не только собирать сервис но и собирать **Docker Image**
  - и собрать можно будет **буквально одной командой**
- - пример как может выглядеть команда `nix build github:back2nix/speaker#docker`
+ - пример как может выглядеть команда `nix build github:example/example#docker`
 
 ## 5. Чистота системы
 - Выход из shell удаляет пакеты
