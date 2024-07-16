@@ -94,8 +94,16 @@ nix develop
 nix build
 ```
 
-### 3. Incremental Build
+### Обновление и откаты
 
+- Если после обновления у вас что-то сломалось мы очень легко можете откатится на предыдущую версию
+- У вас не будут ломаться программы из за того что в вашей системе обновился какой то пакет,
+- потому что каждая программа будет использовать только ту версию которая ей нужна, а если её нет то сама её скачает
+
+### 3. Incremental Build Opencv C++
+
+- Встраиваем библиотеку opencv в систему и добавляем в неё отладочные символы для отладки
+- И может менять код opencv не перестраивая все с нуля а только то что затронуло наше изменение
 - [пример ./incremental_build](./incremental_build/README.md)
 
 # Продвинутые темы NixOS
@@ -188,6 +196,9 @@ nix-build '<nixpkgs>' -I nixpkgs=channel:nixos-23.11 \
 - [Пример динамической генерации Docker образов с Nix](https://youtu.be/pfIDYQ36X0k?list=PLzK3KxVQUZEXEq820lpONsP9QFXYK8jkx&t=990)
 - [Nixery: динамическая генерация Docker образов](https://nixery.dev/)
 - [NixOS Dockertools](https://ryantm.github.io/nixpkgs/builders/images/dockertools/)
+- можно написать nix flake который будет не только собирать сервис но и собирать **Docker Image**
+ - и собрать можно будет **буквально одной командой**
+ - пример как может выглядеть команда `nix build github:back2nix/speaker#docker`
 
 ## 5. Чистота системы
 - Выход из shell удаляет пакеты
@@ -199,10 +210,24 @@ nix-build '<nixpkgs>' -I nixpkgs=channel:nixos-23.11 \
 ## 7. Масштабируемость настроек
 - Настройка одного экземпляра позволяет легко масштабировать на остальные
 
+## Как pg_dump установить и как использовать nix-shell
+
+- [Поиск search.nixos.org](https://search.nixos.org/packages?channel=unstable&show=postgresql&from=0&size=50&sort=relevance&type=packages&query=postgresql)
+```bash
+nix-shell -p postgresql
+nix-shell -I "nixpkgs=channel:nixos-24.05" -p postgresql
+nix-shell -I "nixpkgs=channel:nixos-23.11" -p postgresql
+```
+
 ## 8. Кто использует Nix
 - [Anduril Industries](https://github.com/anduril/jetpack-nixos)
 - [Shopify](https://shopify.engineering/what-is-nix)
 - [Copier](https://github.com/copier-org/copier)
+- https://github.com/ad-si/nix-companies
+- https://theirstack.com/en/technology/nixos
+- https://github.com/mozilla/release-services/tree/master/nix
+- `we at https://www.teamviewer.com are using NixOS for our website deployment with Azure`
+- https://enlyft.com/tech/products/nixos
 - и многие другие...
 
 ## 9. Docker и Nix
