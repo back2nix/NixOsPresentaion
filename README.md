@@ -137,6 +137,34 @@ pkgsCross.mmix                        pkgsCross.x86_64-unknown-redox
 pkgsCross.msp430
 ```
 
+### Nvidia driver
+
+```
+{config, ...}: {
+  hardware.opengl = {
+    enable = true;
+    driSupport = true;
+    driSupport32Bit = true;
+  };
+
+  services.xserver.videoDrivers = ["nvidia"];
+
+  hardware.nvidia = {
+    modesetting.enable = true;
+    powerManagement.enable = false;
+    powerManagement.finegrained = false;
+
+    open = false;
+    nvidiaSettings = true;
+    package = config.boot.kernelPackages.nvidiaPackages.production;
+    # hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
+    # hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_390;
+    # hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_340;
+    # package = config.boot.kernelPackages.nvidiaPackages.stable;
+  };
+}
+```
+
 # Руководство по упаковке в NixOS
 
 ## 1. Обертывание пакетов
