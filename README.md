@@ -306,7 +306,12 @@ nix-shell -I "nixpkgs=channel:nixos-23.11" -p postgresql
 ```
 
 ## 7. Кто использует Nix
+![image](https://github.com/user-attachments/assets/b9b50a2d-bb2b-49f6-bf23-0ccdf7f8100a)
+
 - [Anduril Industries](https://github.com/anduril/jetpack-nixos)
+
+![image](https://github.com/user-attachments/assets/ce887608-8739-48e1-bace-e967191de186)
+
 - [Shopify](https://shopify.engineering/what-is-nix)
 - [Copier](https://github.com/copier-org/copier)
 - https://github.com/ad-si/nix-companies
