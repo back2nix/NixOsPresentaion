@@ -4,7 +4,6 @@
 
 ![image_2024-07-16_20-43-52](https://github.com/user-attachments/assets/d3030aff-6e3d-4916-8f9b-ae5e363edbc0)
 
-
 ---
 
 # NixOS: История и Особенности
@@ -296,3 +295,12 @@ nix-shell -I "nixpkgs=channel:nixos-23.11" -p postgresql
 - GitHub поиск: "language:nix myoption"
 - [Репозиторий NixOS/nixpkgs](https://github.com/NixOS/nixpkgs)
 - [Руководство Nixpkgs](https://nixos.org/manual/nixpkgs/stable/)
+
+
+# Конец
+
+---
+
+![image_2024-07-16_20-43-52](https://github.com/user-attachments/assets/d3030aff-6e3d-4916-8f9b-ae5e363edbc0)
+
+---
