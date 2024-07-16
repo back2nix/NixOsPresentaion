@@ -278,6 +278,11 @@ nix-build '<nixpkgs>' -I nixpkgs=channel:nixos-23.11 \
  - пример как может выглядеть команда `nix build github:example/example#docker`
 - [Еще док+nix](https://tmp.bearblog.dev/minimal-containers-using-nix/)
 
+## 8. Docker и Nix
+- [Видео: Docker и Nix](https://www.youtube.com/watch?v=l17oRkhgqHE)
+- [Docker Babashka Pod](https://github.com/docker/babashka-pod-docker)
+- [Почему Alpine используется в Docker](https://youtu.be/pfIDYQ36X0k?list=PLzK3KxVQUZEXEq820lpONsP9QFXYK8jkx&t=2206)
+
 ## 4. Чистота системы
 - Выход из shell удаляет пакеты
 ```nix
@@ -311,10 +316,6 @@ nix-shell -I "nixpkgs=channel:nixos-23.11" -p postgresql
 - https://enlyft.com/tech/products/nixos
 - и многие другие...
 
-## 8. Docker и Nix
-- [Видео: Docker и Nix](https://www.youtube.com/watch?v=l17oRkhgqHE)
-- [Docker Babashka Pod](https://github.com/docker/babashka-pod-docker)
-- [Почему Alpine используется в Docker](https://youtu.be/pfIDYQ36X0k?list=PLzK3KxVQUZEXEq820lpONsP9QFXYK8jkx&t=2206)
 
 ## 9. Преимущества NixOS
 - [Сравнение с Arch Linux](https://youtu.be/0uixRE8xlbY?t=1017)
