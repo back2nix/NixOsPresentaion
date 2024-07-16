@@ -188,6 +188,12 @@ nix develop
 nix flake show
 ```
 
+### nixvim
+
+```nix
+nix run github:back2nix/nixvim
+```
+
 ## 3. Проекты Golang
 
 - Руководство по работе с Golang проектами:
