@@ -276,6 +276,7 @@ nix-build '<nixpkgs>' -I nixpkgs=channel:nixos-23.11 \
 - можно написать nix flake который будет не только собирать сервис но и собирать **Docker Image**
  - и собрать можно будет **буквально одной командой**
  - пример как может выглядеть команда `nix build github:example/example#docker`
+- [Еще док+nix](https://tmp.bearblog.dev/minimal-containers-using-nix/)
 
 ## 4. Чистота системы
 - Выход из shell удаляет пакеты
