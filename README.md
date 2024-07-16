@@ -1,3 +1,11 @@
+# Презентация Nix 
+
+---
+
+![qr_code_nixos_presentation](https://github.com/user-attachments/assets/97e440c6-f9b8-4e2c-bcad-0320eaba207f)
+
+---
+
 # NixOS: История и Особенности
 
 ---
