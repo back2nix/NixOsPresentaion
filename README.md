@@ -2,7 +2,8 @@
 
 ---
 
-![qr_code_nixos_presentation](https://github.com/user-attachments/assets/97e440c6-f9b8-4e2c-bcad-0320eaba207f)
+![image_2024-07-16_20-43-52](https://github.com/user-attachments/assets/d3030aff-6e3d-4916-8f9b-ae5e363edbc0)
+
 
 ---
 
@@ -52,6 +53,9 @@
 - Nix имеет полное представление о всех входных файлах для сборки
 
 ---
+
+![image](https://github.com/user-attachments/assets/9269d51d-ec9b-4a35-bf62-92bc58b26499)
+
 
 ## Многофункциональность
 
