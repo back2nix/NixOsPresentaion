@@ -60,8 +60,79 @@
 ## Многофункциональность
 
 Nix можно рассматривать как:
-- Менеджер пакетов
+- Менеджер пакетов [Поиск](https://search.nixos.org/packages?channel=24.05&from=0&size=50&sort=relevance&type=packages&query=firefox)
+```nix
+nix-shell -p firefox
+```
 - Инструмент для сборки
+- [golang https://github.com/viktomas/godu](nix_init/golang/README.md)
+
+```nix
+{
+  lib,
+  buildGoModule,
+  fetchFromGitHub,
+}:
+buildGoModule rec {
+  pname = "godu";
+  version = "1.5.2";
+
+  src = fetchFromGitHub {
+    owner = "viktomas";
+    repo = "godu";
+    rev = "v${version}";
+    hash = "sha256-z1LCPweaf8e/HWkSrRCiMYZl4F4dKo4/wDkWgY+eTvk=";
+  };
+
+  vendorHash = "sha256-8cZCeZ0gqxqbwB0WuEOFmEUNQd3/KcLeN0eLGfWG8BY=";
+
+  ldflags = ["-s" "-w"];
+
+  meta = with lib; {
+    description = "Simple golang utility helping to discover large files/folders";
+    homepage = "https://github.com/viktomas/godu";
+    license = licenses.mit;
+    maintainers = with maintainers; [];
+    mainProgram = "godu";
+  };
+}
+```
+
+## 2. Кросс-компиляция
+- [Урок по Кросс-компиляции](https://nix.dev/tutorials/cross-compilation)
+- [Видео: Cross-Compile в NixOS](https://www.youtube.com/watch?v=OV2hi8b5t48)
+
+```bash
+nix repl '<nixpkgs>' -I nixpkgs=channel:nixos-23.11
+nix-repl> pkgsCross.<TAB>
+pkgsCross.aarch64-android             pkgsCross.musl-power
+pkgsCross.aarch64-android-prebuilt    pkgsCross.musl32
+pkgsCross.aarch64-darwin              pkgsCross.musl64
+pkgsCross.aarch64-embedded            pkgsCross.muslpi
+pkgsCross.aarch64-multiplatform       pkgsCross.or1k
+pkgsCross.aarch64-multiplatform-musl  pkgsCross.pogoplug4
+pkgsCross.aarch64be-embedded          pkgsCross.powernv
+pkgsCross.amd64-netbsd                pkgsCross.ppc-embedded
+pkgsCross.arm-embedded                pkgsCross.ppc64
+pkgsCross.armhf-embedded              pkgsCross.ppc64-musl
+pkgsCross.armv7a-android-prebuilt     pkgsCross.ppcle-embedded
+pkgsCross.armv7l-hf-multiplatform     pkgsCross.raspberryPi
+pkgsCross.avr                         pkgsCross.remarkable1
+pkgsCross.ben-nanonote                pkgsCross.remarkable2
+pkgsCross.fuloongminipc               pkgsCross.riscv32
+pkgsCross.ghcjs                       pkgsCross.riscv32-embedded
+pkgsCross.gnu32                       pkgsCross.riscv64
+pkgsCross.gnu64                       pkgsCross.riscv64-embedded
+pkgsCross.i686-embedded               pkgsCross.scaleway-c1
+pkgsCross.iphone32                    pkgsCross.sheevaplug
+pkgsCross.iphone32-simulator          pkgsCross.vc4
+pkgsCross.iphone64                    pkgsCross.wasi32
+pkgsCross.iphone64-simulator          pkgsCross.x86_64-embedded
+pkgsCross.mingw32                     pkgsCross.x86_64-netbsd
+pkgsCross.mingwW64                    pkgsCross.x86_64-netbsd-llvm
+pkgsCross.mmix                        pkgsCross.x86_64-unknown-redox
+pkgsCross.msp430
+```
 
 # Руководство по упаковке в NixOS
 
@@ -110,7 +181,7 @@ nix build
 - У вас не будут ломаться программы из за того что в вашей системе обновился какой то пакет,
 - потому что каждая программа будет использовать только ту версию которая ей нужна, а если её нет то сама её скачает
 
-### 3. Incremental Build Opencv C++
+### Incremental Build Opencv C++
 
 - Встраиваем библиотеку opencv в систему и добавляем в неё отладочные символы для отладки
 - И может менять код opencv не перестраивая все с нуля а только то что затронуло наше изменение
@@ -146,41 +217,6 @@ boot.kernelPackages = pkgs.linuxPackages_latest;
 - **Ansible**: императивный подход (последовательность шагов)
 - **NixOS**: декларативный подход ("манифест" желаемого состояния)
 
-## 2. Кросс-компиляция
-- [Урок по Кросс-компиляции](https://nix.dev/tutorials/cross-compilation)
-- [Видео: Cross-Compile в NixOS](https://www.youtube.com/watch?v=OV2hi8b5t48)
-
-```bash
-nix repl '<nixpkgs>' -I nixpkgs=channel:nixos-23.11
-nix-repl> pkgsCross.<TAB>
-pkgsCross.aarch64-android             pkgsCross.musl-power
-pkgsCross.aarch64-android-prebuilt    pkgsCross.musl32
-pkgsCross.aarch64-darwin              pkgsCross.musl64
-pkgsCross.aarch64-embedded            pkgsCross.muslpi
-pkgsCross.aarch64-multiplatform       pkgsCross.or1k
-pkgsCross.aarch64-multiplatform-musl  pkgsCross.pogoplug4
-pkgsCross.aarch64be-embedded          pkgsCross.powernv
-pkgsCross.amd64-netbsd                pkgsCross.ppc-embedded
-pkgsCross.arm-embedded                pkgsCross.ppc64
-pkgsCross.armhf-embedded              pkgsCross.ppc64-musl
-pkgsCross.armv7a-android-prebuilt     pkgsCross.ppcle-embedded
-pkgsCross.armv7l-hf-multiplatform     pkgsCross.raspberryPi
-pkgsCross.avr                         pkgsCross.remarkable1
-pkgsCross.ben-nanonote                pkgsCross.remarkable2
-pkgsCross.fuloongminipc               pkgsCross.riscv32
-pkgsCross.ghcjs                       pkgsCross.riscv32-embedded
-pkgsCross.gnu32                       pkgsCross.riscv64
-pkgsCross.gnu64                       pkgsCross.riscv64-embedded
-pkgsCross.i686-embedded               pkgsCross.scaleway-c1
-pkgsCross.iphone32                    pkgsCross.sheevaplug
-pkgsCross.iphone32-simulator          pkgsCross.vc4
-pkgsCross.iphone64                    pkgsCross.wasi32
-pkgsCross.iphone64-simulator          pkgsCross.x86_64-embedded
-pkgsCross.mingw32                     pkgsCross.x86_64-netbsd
-pkgsCross.mingwW64                    pkgsCross.x86_64-netbsd-llvm
-pkgsCross.mmix                        pkgsCross.x86_64-unknown-redox
-pkgsCross.msp430
-```
 
 ```bash
 nix-build '<nixpkgs>' -I nixpkgs=channel:nixos-23.11 \
@@ -188,7 +224,7 @@ nix-build '<nixpkgs>' -I nixpkgs=channel:nixos-23.11 \
   -A hello
 ```
 
-## 3. nix-init и Poetry
+## 2. nix-init и Poetry
 Примеры использования:
 - [golang https://github.com/viktomas/godu](nix_init/golang/README.md)
 
@@ -201,7 +237,7 @@ nix-build '<nixpkgs>' -I nixpkgs=channel:nixos-23.11 \
 - [python-poetry](nix_init/python/python-poetry-tutorial/README.md)
 - [proxy sshuttle](nix_init/python/sshuttle/README.md)
 
-## 4. NixOS vs Docker
+## 3. NixOS vs Docker
 - Docker не перестраивает слой, если не знает об изменениях
 - [Пример динамической генерации Docker образов с Nix](https://youtu.be/pfIDYQ36X0k?list=PLzK3KxVQUZEXEq820lpONsP9QFXYK8jkx&t=990)
 - [Nixery: динамическая генерация Docker образов](https://nixery.dev/)
@@ -210,14 +246,14 @@ nix-build '<nixpkgs>' -I nixpkgs=channel:nixos-23.11 \
  - и собрать можно будет **буквально одной командой**
  - пример как может выглядеть команда `nix build github:example/example#docker`
 
-## 5. Чистота системы
+## 4. Чистота системы
 - Выход из shell удаляет пакеты
 
-## 6. Управление конфигурациями
+## 5. Управление конфигурациями
 - Nix позволяет декларативно описывать различные варианты запуска сервисов
 - Унификация конфигураций различных сервисов через Nix
 
-## 7. Масштабируемость настроек
+## 6. Масштабируемость настроек
 - Настройка одного экземпляра позволяет легко масштабировать на остальные
 
 ## Как pg_dump установить и как использовать nix-shell
@@ -229,7 +265,7 @@ nix-shell -I "nixpkgs=channel:nixos-24.05" -p postgresql
 nix-shell -I "nixpkgs=channel:nixos-23.11" -p postgresql
 ```
 
-## 8. Кто использует Nix
+## 7. Кто использует Nix
 - [Anduril Industries](https://github.com/anduril/jetpack-nixos)
 - [Shopify](https://shopify.engineering/what-is-nix)
 - [Copier](https://github.com/copier-org/copier)
@@ -240,20 +276,20 @@ nix-shell -I "nixpkgs=channel:nixos-23.11" -p postgresql
 - https://enlyft.com/tech/products/nixos
 - и многие другие...
 
-## 9. Docker и Nix
+## 8. Docker и Nix
 - [Видео: Docker и Nix](https://www.youtube.com/watch?v=l17oRkhgqHE)
 - [Docker Babashka Pod](https://github.com/docker/babashka-pod-docker)
 - [Почему Alpine используется в Docker](https://youtu.be/pfIDYQ36X0k?list=PLzK3KxVQUZEXEq820lpONsP9QFXYK8jkx&t=2206)
 
-## 10. Преимущества NixOS
+## 9. Преимущества NixOS
 - [Сравнение с Arch Linux](https://youtu.be/0uixRE8xlbY?t=1017)
 
-## 11. Полезные ссылки
+## 10. Полезные ссылки
 - [Поиск пакетов NixOS](https://search.nixos.org/packages)
 - [NixHub: поиск Go пакетов](https://www.nixhub.io/packages/go)
 - [Опции Home Manager](https://home-manager-options.extranix.com/)
 
-## 12. Как изучать Nix
+## 11. Как изучать Nix
 - [Официальные туториалы](https://nix.dev/tutorials/index.html)
 - [NixOS и Flakes](https://nixos-and-flakes.thiscute.world/introduction/)
 - [Flake Parts Community](https://community.flake.parts/services-flake)
