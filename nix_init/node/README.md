@@ -5,7 +5,7 @@
 yarn add @vue/cli
 # yarn upgrade --latest @vue/cli
 yarn create vue
-cd vue-fronted
+cd vue-project
 yarn
 yarn dev
 ```
